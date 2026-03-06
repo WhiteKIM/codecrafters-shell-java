@@ -1,5 +1,5 @@
 package command;
 
-public interface Command {
-    void process();
+public interface Command<T, R> {
+    R process(T input);
 }

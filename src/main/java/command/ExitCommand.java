@@ -1,8 +1,8 @@
 package command;
 
-public class ExitCommand implements Command {
+public class ExitCommand implements Command<Void, Void> {
     @Override
-    public void process() {
-        return;
+    public Void process(Void input) {
+        return null;
     }
 }
