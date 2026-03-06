@@ -1,3 +1,5 @@
+package core;
+
 public enum Message {
     NOT_FOUND("command not found");
 
