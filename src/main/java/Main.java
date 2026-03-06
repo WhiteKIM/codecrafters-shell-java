@@ -5,9 +5,12 @@ import java.io.OutputStreamWriter;
 import java.util.Set;
 
 public class Main {
-    private static final Interpreter interpreter = new Interpreter();
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
     public static void main(String[] args) throws Exception {
+        Interpreter interpreter = new Interpreter(br, bw);
+
         while (true) {
             interpreter.run();
         }
