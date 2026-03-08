@@ -28,7 +28,7 @@ public class TypeCommand implements Command<String, String> {
             File shellCommand = new File(path, command);
 
             if(shellCommand.isFile() && shellCommand.canExecute()) {
-                return command + "is " + shellCommand.getAbsolutePath();
+                return command + " is " + shellCommand.getAbsolutePath();
             }
         }
 
