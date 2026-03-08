@@ -4,11 +4,9 @@ import command.EchoCommand;
 import command.ExitCommand;
 import command.TypeCommand;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Interpreter {
     private final BufferedReader br;
@@ -91,7 +89,9 @@ public class Interpreter {
                 }
 
                 Process process = Runtime.getRuntime().exec(commandLine[0].split(" "));
-                process.getInputStream().transferTo(System.out);
+                BufferedReader processReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                bw.write(processReader.lines().collect(Collectors.joining()));
 
                 return;
             }
