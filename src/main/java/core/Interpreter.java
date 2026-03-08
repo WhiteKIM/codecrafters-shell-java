@@ -6,6 +6,7 @@ import command.TypeCommand;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
@@ -27,13 +28,21 @@ public class Interpreter {
 
         // 명령어 인자 구분
         String command = commandLine[0].split(" ")[0];
-        String args = "";
 
-        if(!supportCommandSet.contains(command)) {
+        if(supportCommandSet.contains(command)) {
+           builtInCommand(commandLine, command);
+        } else {
             bw.write(command + ": " + Message.NOT_FOUND.getMsg() + "\n");
+
+            // checkShellCommand(commandLine, command);
         }
 
-        String resultMsg  = "";
+        bw.flush();
+    }
+
+    private void builtInCommand(String[] commandLine, String command) throws Exception {
+        String args = "";           // 인자값
+        String resultMsg = "";      // 결과값
 
         switch (command) {
             case "exit":
@@ -64,9 +73,25 @@ public class Interpreter {
                 bw.write(resultMsg + "\n");
                 break;
         }
-
-        bw.flush();
     }
+
+    private void checkShellCommand(String[] commandLine, String command) throws Exception {
+        // Check System Path
+        String systemPath = System.getenv("PATH");
+        File shellCommand = new File(systemPath, command);
+        String resultMsg = "";
+
+        System.out.println(systemPath);
+
+        if(shellCommand.isFile() && shellCommand.canExecute()) {
+            resultMsg = command + "is " + shellCommand.getAbsolutePath();
+        } else {
+            resultMsg = command + ": " + Message.NOT_FOUND.getMsg();
+        }
+
+        bw.write(resultMsg + "\n");
+    }
+
 
     private void doClose() throws IOException {
         br.close();
