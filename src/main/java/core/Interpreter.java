@@ -83,15 +83,10 @@ public class Interpreter {
             File shellCommand = new File(path, command);
 
             if(shellCommand.isFile() && shellCommand.canExecute()) {
-                String args = "";
-                if(commandLine[0].length() > command.length()) {
-                    args = commandLine[0].substring(command.length() + 1);
-                }
-
                 Process process = Runtime.getRuntime().exec(commandLine[0].split(" "));
                 BufferedReader processReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-                bw.write(processReader.lines().collect(Collectors.joining()));
+                bw.write(processReader.lines().collect(Collectors.joining("\n")) + "\n");
 
                 return;
             }
