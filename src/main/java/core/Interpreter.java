@@ -30,9 +30,9 @@ public class Interpreter {
         if(supportCommandSet.contains(command)) {
            builtInCommand(commandLine, command);
         } else {
-            bw.write(command + ": " + Message.NOT_FOUND.getMsg() + "\n");
+//            bw.write(command + ": " + Message.NOT_FOUND.getMsg() + "\n");
 
-            // checkShellCommand(commandLine, command);
+             checkShellCommand(commandLine, command);
         }
 
         bw.flush();
