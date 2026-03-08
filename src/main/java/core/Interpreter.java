@@ -78,15 +78,23 @@ public class Interpreter {
     private void checkShellCommand(String[] commandLine, String command) throws Exception {
         // Check System Path
         String systemPath = System.getenv("PATH");
-        File shellCommand = new File(systemPath, command);
-        String resultMsg = "";
+        String[] pathList = systemPath.split(File.pathSeparator);
+        String resultMsg = command + ": " + Message.NOT_FOUND.getMsg();
 
-        System.out.println(systemPath);
+        for(String path : pathList) {
+            File shellCommand = new File(path, command);
 
-        if(shellCommand.isFile() && shellCommand.canExecute()) {
-            resultMsg = command + "is " + shellCommand.getAbsolutePath();
-        } else {
-            resultMsg = command + ": " + Message.NOT_FOUND.getMsg();
+            if(shellCommand.isFile() && shellCommand.canExecute()) {
+                String args = "";
+                if(commandLine[0].length() > command.length()) {
+                    args = commandLine[0].substring(command.length() + 1);
+                }
+
+                Process process = Runtime.getRuntime().exec(commandLine[0].split(" "));
+                process.getInputStream().transferTo(System.out);
+
+                return;
+            }
         }
 
         bw.write(resultMsg + "\n");
