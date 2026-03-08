@@ -3,6 +3,7 @@ package command;
 import core.Interpreter;
 
 import java.io.File;
+import java.util.Locale;
 
 public class TypeCommand implements Command<String, String> {
     private final String SUPPORT_COMMAND = " is a shell builtin";
@@ -20,10 +21,15 @@ public class TypeCommand implements Command<String, String> {
 
     private String isShellCommand(String command) {
         String systemPath = System.getenv("PATH");
-        File shellCommand = new File(systemPath, command);
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        String[] systemPathList = systemPath.split(File.pathSeparator);
 
-        if(shellCommand.isFile() && shellCommand.canExecute()) {
-            return command + "is " + shellCommand.getAbsolutePath();
+        for(String path : systemPathList) {
+            File shellCommand = new File(path, command);
+
+            if(shellCommand.isFile() && shellCommand.canExecute()) {
+                return command + "is " + shellCommand.getAbsolutePath();
+            }
         }
 
         return command + NOT_SUPPORT_COMMAND;
