@@ -10,7 +10,7 @@ public class CdCommand implements BuildInCommand<String, String> {
         try {
             PathResolver.moveWorkingDir(input);
         } catch (NotExistPathException e) {
-            return "cd " + input + ": No such file or directory";
+            return "cd: " + input + ": No such file or directory";
         }
 
         return null;
