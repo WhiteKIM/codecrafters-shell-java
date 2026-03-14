@@ -1,5 +1,6 @@
-package command;
+package command.impl;
 
+import command.Command;
 import core.Interpreter;
 
 import java.io.File;
