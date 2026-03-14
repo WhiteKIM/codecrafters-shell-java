@@ -15,7 +15,7 @@ public class PathResolver {
     
     public static void moveWorkingDir(String path) throws NotExistPathException {
         if(path.startsWith("/")) { // 절대경로
-            File dir = new File(workingDir + path);
+            File dir = new File(path);
             
             if(dir.exists() && dir.isDirectory()) {
                 workingDir = dir.getAbsolutePath();
