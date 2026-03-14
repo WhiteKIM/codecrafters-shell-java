@@ -25,15 +25,17 @@ public class PathResolver {
             // 경로변경 실패
             throw new NotExistPathException();
         } else { // 상대경로
-//            if(path.startsWith("./")) { // 현재 경로
-//
-//            } else if(path.startsWith("../")) { // 이전 경로
-//
-//            } else if() {   // 현재 경로 내 폴더
-//
-//            }
-//
-//            File dir = new File(workingDir + "/");
+            if(path.startsWith("../") && path.startsWith("./")) {
+                path = "/" + path;
+            }
+
+            String current = Paths.get(workingDir).resolve(path).normalize().toAbsolutePath().toString();
+            File dir = new File(current);
+
+            if(dir.exists() && dir.isDirectory()) {
+                workingDir = dir.getAbsolutePath();
+                return;
+            }
 
             throw new NotExistPathException();
         }
