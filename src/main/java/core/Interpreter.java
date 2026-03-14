@@ -1,9 +1,6 @@
 package core;
 
-import command.impl.EchoCommand;
-import command.impl.ExitCommand;
-import command.impl.PwdCommnad;
-import command.impl.TypeCommand;
+import command.impl.*;
 
 import java.io.*;
 import java.util.Set;
@@ -12,7 +9,7 @@ import java.util.stream.Collectors;
 public class Interpreter {
     private final BufferedReader br;
     private final BufferedWriter bw;
-    private static final Set<String> supportCommandSet = Set.of("exit", "echo", "type", "pwd");
+    private static final Set<String> supportCommandSet = Set.of("exit", "echo", "type", "pwd", "cd");
 
     public Interpreter(BufferedReader br, BufferedWriter bw) {
         this.br = br;
@@ -72,9 +69,22 @@ public class Interpreter {
                 bw.write(resultMsg + "\n");
                 break;
             case "pwd" :
-                PwdCommnad pwd = new PwdCommnad();
+                PwdCommand pwd = new PwdCommand();
                 resultMsg = pwd.process(null);
                 bw.write(resultMsg + "\n");
+                break;
+            case "cd":
+                args = "";
+
+                if(commandLine[0].length() > command.length()) {
+                    args = commandLine[0].substring(command.length() + 1);
+                }
+
+                CdCommand cd = new CdCommand();
+                resultMsg = cd.process(args);
+
+                if(resultMsg != null)
+                    bw.write(resultMsg + "\n");
                 break;
         }
     }
