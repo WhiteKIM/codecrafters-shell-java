@@ -12,6 +12,8 @@ public class CatCommand implements BuildInCommand<String, String> {
         ProcessBuilder pcb = new ProcessBuilder("cat " + input);
         pcb.directory(new File(PathResolver.getWorkingDir()));
 
+        System.out.println("cat " + input);
+
         try {
             Process process = pcb.start();
             InputStream processInputStream = process.getInputStream();
