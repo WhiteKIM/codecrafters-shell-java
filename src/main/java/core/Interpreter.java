@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class Interpreter {
     private final BufferedReader br;
     private final BufferedWriter bw;
-    private static final Set<String> supportCommandSet = Set.of("exit", "echo", "type", "pwd", "cd");
+    private static final Set<String> supportCommandSet = Set.of("exit", "echo", "type", "pwd", "cd", "cat");
 
     public Interpreter(BufferedReader br, BufferedWriter bw) {
         this.br = br;
@@ -85,6 +85,20 @@ public class Interpreter {
 
                 if(resultMsg != null)
                     bw.write(resultMsg + "\n");
+                break;
+            case "cat":
+                args = "";
+
+                if(commandLine[0].length() > command.length()) {
+                    args = commandLine[0].substring(command.length() + 1);
+                }
+
+                CatCommand cat = new CatCommand();
+                resultMsg = cat.process(args);
+
+                if(resultMsg != null)
+                    bw.write(resultMsg + "\n");
+
                 break;
         }
     }
