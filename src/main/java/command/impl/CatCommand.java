@@ -1,36 +1,31 @@
 package command.impl;
 
 import command.BuildInCommand;
+import resolver.PathResolver;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 public class CatCommand implements BuildInCommand<String, String> {
     @Override
     public String process(String input) {
         String[] filePathList = input.split(" ");
         StringBuilder sb = new StringBuilder();
+        ProcessBuilder pcb = new ProcessBuilder("cat " + input);
+        pcb.directory(new File(PathResolver.getWorkingDir()));
 
-        for(String path : filePathList) {
-            File file = new File(path.replaceAll("''", ""));
 
-            if(!file.exists() || !file.isFile()) {
-                return null;
+        try {
+            Process process = pcb.start();
+            InputStream processInputStream = process.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(processInputStream));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
             }
-
-            try(BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                sb.append(" ");
-
-            } catch(Exception e) {
-                return null;
-            }
+        } catch (IOException e) {
+            return null;
         }
 
         return sb.toString();
