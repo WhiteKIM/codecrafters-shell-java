@@ -15,29 +15,49 @@ public class PathResolver {
     
     public static void moveWorkingDir(String path) throws NotExistPathException {
         if(path.startsWith("/")) { // 절대경로
-            File dir = new File(path);
-            
-            if(dir.exists() && dir.isDirectory()) {
-                workingDir = dir.getAbsolutePath();
-                return;
-            }
-            
+            if (isExistPath(path)) return;
+
             // 경로변경 실패
             throw new NotExistPathException();
-        } else { // 상대경로
+        } else if(path.startsWith("../") || path.startsWith("./")) { // 상대경로
             if(path.startsWith("../") && path.startsWith("./")) {
                 path = "/" + path;
             }
 
             String current = Paths.get(workingDir).resolve(path).normalize().toAbsolutePath().toString();
-            File dir = new File(current);
+            if (isExistPath(current)) return;
 
-            if(dir.exists() && dir.isDirectory()) {
-                workingDir = dir.getAbsolutePath();
-                return;
+            throw new NotExistPathException();
+        } else if(path.startsWith("~")) {
+            String home = System.getenv("HOME");
+            
+            if(isExistPath(home)) {
+                path = path.replace("~", "");
+
+                if(path.isBlank()) {
+                    return;
+                }
+
+                // 여기서 더 남았다면 위로
+                moveWorkingDir(path);
             }
+
 
             throw new NotExistPathException();
         }
+    }
+
+    private static boolean isExistPath(String path) throws NotExistPathException {
+        if(path == null || path.isBlank()) {
+            throw new NotExistPathException();
+        }
+
+        File dir = new File(path);
+
+        if(dir.exists() && dir.isDirectory()) {
+            workingDir = dir.getAbsolutePath();
+            return true;
+        }
+        return false;
     }
 }
