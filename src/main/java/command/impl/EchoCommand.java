@@ -11,43 +11,30 @@ public class EchoCommand implements ShellCommand<String, String> {
     private String quoteProcess(String input) {
         StringBuilder sb = new StringBuilder();
 
-        int begin = -1;
-        int end = -1;
-        int blank = 0;
+        boolean isQuote = false;
 
         input = input.replaceAll("''", "");
 
         for(int i = 0; i < input.length(); i++) {
-            if(input.charAt(i) == '\'') {
-                if(begin == -1) {
-                    begin = i;
-                } else {
-                    end = i;
-                }
-            } else {
-                if(input.charAt(i) != ' ') {
-                    if(blank != 0) {
-                        if(begin != -1 && end != -1) {
-                            sb.append(" ".repeat(Math.max(0, end - begin + 1)));
-
-                            // 쌍따옴표 내 문자열을 정상적으로 입력
-                            begin = -1;
-                            end = -1;
-                        } else {
-                            sb.append(" ");
-                            blank = 0;
-                        }
-                    }
-
-                    sb.append(input.charAt(i));
-                } else {
-                    blank += 1;
-                }
+            if(input.charAt(i) == '\'' && !isQuote) {       // 여는 따옴표
+                isQuote = true;
+                continue;
+            } else if(input.charAt(i) == '\'' && isQuote) { // 닫는 따옴표
+                isQuote = false;
+                continue;
             }
 
-
-
-
+            if(isQuote) {
+                sb.append(input.charAt(i));
+            } else {
+                if(input.charAt(i) == ' ') {
+                    if(i + 1 < input.length() && input.charAt(i+1) != ' ') {
+                        sb.append(' ');
+                    }
+                } else {
+                    sb.append(input.charAt(i));
+                }
+            }
         }
 
         return sb.toString();
