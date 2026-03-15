@@ -30,7 +30,7 @@ public class PathResolver {
             throw new NotExistPathException();
         } else if(path.startsWith("~")) {
             String home = System.getenv("HOME");
-            
+
             if(isExistPath(home)) {
                 path = path.replace("~", "");
 
