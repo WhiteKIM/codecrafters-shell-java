@@ -8,11 +8,9 @@ import java.io.*;
 public class CatCommand implements BuildInCommand<String, String> {
     @Override
     public String process(String input) {
-        String[] filePathList = input.split(" ");
         StringBuilder sb = new StringBuilder();
         ProcessBuilder pcb = new ProcessBuilder("cat " + input);
         pcb.directory(new File(PathResolver.getWorkingDir()));
-
 
         try {
             Process process = pcb.start();
@@ -22,6 +20,7 @@ public class CatCommand implements BuildInCommand<String, String> {
             String line;
 
             while ((line = br.readLine()) != null) {
+                System.out.println(line);
                 sb.append(line);
             }
         } catch (IOException e) {
