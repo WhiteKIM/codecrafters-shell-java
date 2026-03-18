@@ -25,6 +25,8 @@ public class TypeCommand implements Command<String, String> {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         String[] systemPathList = systemPath.split(File.pathSeparator);
 
+        System.out.println(command);
+
         for(String path : systemPathList) {
             File shellCommand = new File(path, command);
 
