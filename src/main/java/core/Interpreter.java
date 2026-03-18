@@ -92,7 +92,7 @@ public class Interpreter {
                     bw.write(resultMsg + "\n");
                 break;
             case "cat":
-                ProcessBuilder pcb = new ProcessBuilder(commandLine[0]);
+                ProcessBuilder pcb = new ProcessBuilder("bash", "-c", commandLine[0]);
                 pcb.inheritIO();
                 Process process = pcb.start();
                 process.getInputStream().transferTo(System.out);
