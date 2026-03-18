@@ -21,6 +21,11 @@ public class Interpreter {
 
         // 구분자 처리
         String[] commandLine = br.readLine().split("\\|");
+        
+        // 공백 제거
+        for(int i = 0; i < commandLine.length; i++) {
+            commandLine[i] = commandLine[i].trim();
+        }
 
         // 명령어 인자 구분
         String command = commandLine[0].split(" ")[0];
