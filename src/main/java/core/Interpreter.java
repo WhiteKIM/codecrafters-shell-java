@@ -88,7 +88,7 @@ public class Interpreter {
                     bw.write(resultMsg + "\n");
                 break;
             case "cat":
-                ProcessBuilder pcb = new ProcessBuilder(command);
+                ProcessBuilder pcb = new ProcessBuilder(commandLine[0]);
                 pcb.directory(new File(PathResolver.getWorkingDir()));
 
                 System.out.println(command);
