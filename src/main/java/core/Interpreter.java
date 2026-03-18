@@ -28,7 +28,8 @@ public class Interpreter {
         }
 
         // 명령어 인자 구분
-        String command = commandLine[0].split(" ")[0];
+//        String command = commandLine[0].split(" ")[0];
+        String command = commandLine[0].trim().split("\\s+")[0].replaceAll("^['\"]|['\"]$", "");
 
         if(supportCommandSet.contains(command)) {
            builtInCommand(commandLine, command);
