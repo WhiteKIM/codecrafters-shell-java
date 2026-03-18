@@ -1,6 +1,7 @@
 package core;
 
 import command.impl.*;
+import resolver.PathResolver;
 
 import java.io.*;
 import java.util.Set;
@@ -87,17 +88,27 @@ public class Interpreter {
                     bw.write(resultMsg + "\n");
                 break;
             case "cat":
-                args = "";
+                ProcessBuilder pcb = new ProcessBuilder(command);
+                pcb.directory(new File(PathResolver.getWorkingDir()));
+                
+                try {
+                    Process process = pcb.start();
+                    process.getInputStream().transferTo(System.out);
+                } catch (IOException _) {
 
-                if(commandLine[0].length() > command.length()) {
-                    args = commandLine[0].substring(command.length() + 1);
                 }
 
-                CatCommand cat = new CatCommand();
-                resultMsg = cat.process(args);
-
-                if(resultMsg != null)
-                    bw.write(resultMsg + "\n");
+//                args = "";
+//
+//                if(commandLine[0].length() > command.length()) {
+//                    args = commandLine[0].substring(command.length() + 1);
+//                }
+//
+//                CatCommand cat = new CatCommand();
+//                resultMsg = cat.process(args);
+//
+//                if(resultMsg != null)
+//                    bw.write(resultMsg + "\n");
 
                 break;
         }
