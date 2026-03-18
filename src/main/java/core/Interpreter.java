@@ -1,7 +1,6 @@
 package core;
 
 import command.impl.*;
-import resolver.PathResolver;
 
 import java.io.*;
 import java.util.Set;
@@ -89,7 +88,7 @@ public class Interpreter {
                 break;
             case "cat":
                 ProcessBuilder pcb = new ProcessBuilder(commandLine[0]);
-                pcb.directory(new File(PathResolver.getWorkingDir()));
+                pcb.inheritIO();
                 Process process = pcb.start();
                 process.getInputStream().transferTo(System.out);
                 process.getErrorStream().transferTo(System.err);
