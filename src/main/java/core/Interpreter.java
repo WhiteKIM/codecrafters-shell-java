@@ -90,16 +90,9 @@ public class Interpreter {
             case "cat":
                 ProcessBuilder pcb = new ProcessBuilder(commandLine[0]);
                 pcb.directory(new File(PathResolver.getWorkingDir()));
-
-                System.out.println(command);
-
-                try {
-                    Process process = pcb.start();
-                    process.getInputStream().transferTo(System.out);
-                } catch (IOException _) {
-
-                }
-
+                Process process = pcb.start();
+                process.getInputStream().transferTo(System.out);
+                process.getErrorStream().transferTo(System.err);
 //                args = "";
 //
 //                if(commandLine[0].length() > command.length()) {
