@@ -4,7 +4,9 @@ import command.impl.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Set;
 
 public class Interpreter {
@@ -115,12 +117,26 @@ public class Interpreter {
     }
 
     private void checkShellCommand(String[] commandLine, String command) throws Exception {
-        ProcessBuilder pcb = new ProcessBuilder("bash", "-c", commandLine[0]);
-        pcb.inheritIO();
-        Process process = pcb.start();
-        process.getInputStream().transferTo(System.out);
-        process.getErrorStream().transferTo(System.err);
-        process.waitFor();
+        String systemPath = System.getenv("PATH");
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        String[] systemPathList = systemPath.split(File.pathSeparator);
+
+        for(String path : systemPathList) {
+            File shellCommand = new File(path, command);
+
+            if(shellCommand.isFile() && shellCommand.canExecute()) {
+                // 여기까지 오면 실행가능한 명령어임
+                ProcessBuilder pcb = new ProcessBuilder("bash", "-c", commandLine[0]);
+                pcb.inheritIO();
+                Process process = pcb.start();
+                process.waitFor();
+                return;
+            }
+        }
+
+        String msg = command + ": not found";
+
+        bw.write(msg);
     }
 
 
