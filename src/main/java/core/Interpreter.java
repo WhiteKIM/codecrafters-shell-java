@@ -2,9 +2,10 @@ package core;
 
 import command.impl.*;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Interpreter {
     private final BufferedReader br;
@@ -34,8 +35,6 @@ public class Interpreter {
         if(supportCommandSet.contains(command)) {
            builtInCommand(commandLine, command);
         } else {
-//            bw.write(command + ": " + Message.NOT_FOUND.getMsg() + "\n");
-
              checkShellCommand(commandLine, command);
         }
 
@@ -116,25 +115,11 @@ public class Interpreter {
     }
 
     private void checkShellCommand(String[] commandLine, String command) throws Exception {
-        // Check System Path
-        String systemPath = System.getenv("PATH");
-        String[] pathList = systemPath.split(File.pathSeparator);
-        String resultMsg = command + ": " + Message.NOT_FOUND.getMsg();
-
-        for(String path : pathList) {
-            File shellCommand = new File(path, command);
-
-            if(shellCommand.isFile() && shellCommand.canExecute()) {
-                Process process = Runtime.getRuntime().exec(commandLine[0].split(" "));
-                BufferedReader processReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-                bw.write(processReader.lines().collect(Collectors.joining("\n")) + "\n");
-
-                return;
-            }
-        }
-
-        bw.write(resultMsg + "\n");
+        ProcessBuilder pcb = new ProcessBuilder("bash", "-c", commandLine[0]);
+        pcb.inheritIO();
+        Process process = pcb.start();
+        process.getInputStream().transferTo(System.out);
+        process.getErrorStream().transferTo(System.err);
     }
 
 
