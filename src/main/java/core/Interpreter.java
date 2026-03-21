@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class Interpreter {
     private final BufferedReader br;
     private final BufferedWriter bw;
-    private static final Set<String> supportCommandSet = Set.of("exit", "echo", "type", "pwd", "cd", "cat");
+    private static final Set<String> supportCommandSet = Set.of("exit", "echo", "type", "pwd", "cd");
 
     public Interpreter(BufferedReader br, BufferedWriter bw) {
         this.br = br;
