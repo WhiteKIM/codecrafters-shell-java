@@ -27,8 +27,11 @@ public class TypeCommand implements Command<String, String> {
 
         System.out.println(command);
 
+
         for(String path : systemPathList) {
             File shellCommand = new File(path, command);
+
+            System.out.println(shellCommand.getAbsolutePath());
 
             if(shellCommand.isFile() && shellCommand.canExecute()) {
                 return command + " is " + shellCommand.getAbsolutePath();
