@@ -134,9 +134,9 @@ public class Interpreter {
             }
         }
 
-        String msg = command + ": not found";
+        String msg = command + ": command not found";
 
-        bw.write(msg);
+        bw.write(msg + "\n");
     }
 
 
