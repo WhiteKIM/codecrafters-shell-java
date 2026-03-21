@@ -120,6 +120,7 @@ public class Interpreter {
         Process process = pcb.start();
         process.getInputStream().transferTo(System.out);
         process.getErrorStream().transferTo(System.err);
+        process.waitFor();
     }
 
 
