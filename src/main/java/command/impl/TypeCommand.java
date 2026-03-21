@@ -12,32 +12,20 @@ public class TypeCommand implements Command<String, String> {
 
     @Override
     public String process(String command) {
-        // 지원 여부 체크
-        if(!Interpreter.isSupportCommand(command)) {
+        if(Interpreter.isSupportCommand(command)) {
+            return command + SUPPORT_COMMAND;
+        } else {
+            // check Shell Command
             return isShellCommand(command);
         }
-
-        // 여기서는 내장인지 실행가능 쉘커맨드인지 체크
-        String systemPath = System.getenv("PATH");
-        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        String[] systemPathList = systemPath.split(File.pathSeparator);
-
-        for(String path : systemPathList) {
-            File shellCommand = new File(path, command);
-
-            if(shellCommand.isFile() && shellCommand.canExecute()) {
-                return command + " is " + shellCommand.getAbsolutePath();
-            }
-        }
-        
-        // 실행가능한 경로 X => 내장
-        return command + SUPPORT_COMMAND;
     }
 
     private String isShellCommand(String command) {
         String systemPath = System.getenv("PATH");
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         String[] systemPathList = systemPath.split(File.pathSeparator);
+
+        System.out.println(command);
 
         for(String path : systemPathList) {
             File shellCommand = new File(path, command);
