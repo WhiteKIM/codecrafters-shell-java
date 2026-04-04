@@ -20,12 +20,10 @@ public class DoubleQuoteParser implements QuoteParser{
                     // 따옴표 밖에서는 다음 공백은 하나만 입력됨
 
                     if(atChar == ' ') {
-                        for(int spaceIndex = i + 1; spaceIndex < input.length(); spaceIndex++) {
-                            if(input.charAt(spaceIndex) != ' ') {
-                                sb.append(" ");
-                                i = spaceIndex;     // 인덱스 위치 변경
-                                break;
-                            }
+                        sb.append(" ");
+
+                        while (i + 1 < input.length() &&  input.charAt(i + 1) == ' ') {
+                            i++;
                         }
 
                         continue;
@@ -34,8 +32,6 @@ public class DoubleQuoteParser implements QuoteParser{
                     sb.append(atChar);
                 }
             }
-
-
         }
 
         return sb.toString();
