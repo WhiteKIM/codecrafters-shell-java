@@ -1,42 +1,18 @@
 package command.impl;
 
 import command.ShellCommand;
+import command.utils.handler.ParserHandler;
+import command.utils.parser.DoubleQuoteParser;
+import command.utils.parser.SingleQuoteParser;
 
 public class EchoCommand implements ShellCommand<String, String> {
     @Override
     public String process(String input) {
-        return quoteProcess(input);
-    }
+        ParserHandler singleQuoteHandler = new ParserHandler(new SingleQuoteParser());
+        ParserHandler doubleQuoteHandler = new ParserHandler(new DoubleQuoteParser());
 
-    private String quoteProcess(String input) {
-        StringBuilder sb = new StringBuilder();
+        singleQuoteHandler.setHandler(doubleQuoteHandler);
 
-        boolean isQuote = false;
-
-        input = input.replaceAll("''", "");
-
-        for(int i = 0; i < input.length(); i++) {
-            if(input.charAt(i) == '\'' && !isQuote) {       // 여는 따옴표
-                isQuote = true;
-                continue;
-            } else if(input.charAt(i) == '\'' && isQuote) { // 닫는 따옴표
-                isQuote = false;
-                continue;
-            }
-
-            if(isQuote) {
-                sb.append(input.charAt(i));
-            } else {
-                if(input.charAt(i) == ' ') {
-                    if(i + 1 < input.length() && input.charAt(i+1) != ' ') {
-                        sb.append(' ');
-                    }
-                } else {
-                    sb.append(input.charAt(i));
-                }
-            }
-        }
-
-        return sb.toString();
+        return singleQuoteHandler.run(input);
     }
 }
