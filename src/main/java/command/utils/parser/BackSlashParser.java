@@ -35,7 +35,7 @@ public class BackSlashParser implements QuoteParser {
                     } else if(nextChar == ' ') {// 공백
                         for(int j = i + 1; j < input.length(); j++) {
                             if(input.charAt(j) != ' ') {
-                                sb.append(' ').append(input.charAt(j - 1));
+                                sb.append(' ');
                                 i = j;  // 위치 갱신
                                 break;
                             } 
