@@ -59,6 +59,6 @@ public class BackSlashParser implements QuoteParser {
             }
         }
 
-        return true;
+        return false;
     }
 }
