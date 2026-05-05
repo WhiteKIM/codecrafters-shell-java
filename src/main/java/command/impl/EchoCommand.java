@@ -15,10 +15,10 @@ public class EchoCommand implements ShellCommand<String, String> {
         ParserHandler singleQuoteHandler = new ParserHandler(new SingleQuoteParser());
         ParserHandler doubleQuoteHandler = new ParserHandler(new DoubleQuoteParser());
 
-        backslashHandler.setHandler(basicHandler);
-        basicHandler.setHandler(singleQuoteHandler);
         singleQuoteHandler.setHandler(doubleQuoteHandler);
+        doubleQuoteHandler.setHandler(backslashHandler);
+        backslashHandler.setHandler(basicHandler);
 
-        return backslashHandler.run(input);
+        return singleQuoteHandler.run(input);
     }
 }
