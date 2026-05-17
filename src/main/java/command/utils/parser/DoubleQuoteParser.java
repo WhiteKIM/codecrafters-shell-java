@@ -1,6 +1,13 @@
 package command.utils.parser;
 
+import java.util.Set;
+
 public class DoubleQuoteParser implements QuoteParser{
+    private final Set<Character> specialWord = Set.of(
+            '\'', '\\', '\"', '$', '#', '?', '.', ',', '|',
+            '&', '*', '(', ')'
+    );
+
     @Override
     public String process(String input) {
         StringBuilder sb = new StringBuilder();
@@ -9,8 +16,13 @@ public class DoubleQuoteParser implements QuoteParser{
 
         for(int i = 0; i < input.length(); i++) {
             char atChar = input.charAt(i);
+            char prevChar = ' ';
 
-            if (atChar == '"') {
+            if(i - 1 >= 0) {
+                prevChar = input.charAt(i - 1);
+            }
+
+            if (atChar == '"' && (prevChar == '\\')) {
                 isQuote = !isQuote;         // 현재 문자 쌍따옴표
             } else {                        // 현재 문자는 일반 문자열
                 if(isQuote) {
@@ -18,7 +30,6 @@ public class DoubleQuoteParser implements QuoteParser{
                     sb.append(atChar);
                 } else {
                     // 따옴표 밖에서는 다음 공백은 하나만 입력됨
-
                     if(atChar == ' ') {
                         sb.append(" ");
 
@@ -27,6 +38,18 @@ public class DoubleQuoteParser implements QuoteParser{
                         }
 
                         continue;
+                    } else if (atChar == '\\') {
+                        // 특수문자 치환 추가
+                        if(i + 1 < input.length()) {
+                            char nextChar = input.charAt(i + 1);
+
+                            // 특수 문자
+                            if(specialWord.contains(nextChar)) {
+                                sb.append(nextChar);
+                                i += 1;
+                                continue;
+                            }
+                        }
                     }
 
                     sb.append(atChar);
@@ -36,7 +59,7 @@ public class DoubleQuoteParser implements QuoteParser{
 
         return sb.toString();
     }
-
+    
     /**
      * 지원여부 확인
      * @param input - 입력된 문자열
