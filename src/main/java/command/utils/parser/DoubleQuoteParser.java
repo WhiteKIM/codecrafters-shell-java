@@ -46,7 +46,7 @@ public class DoubleQuoteParser implements QuoteParser{
                             // 특수 문자
                             if(specialWord.contains(nextChar)) {
                                 sb.append(nextChar);
-                                i += 1;
+                                i += 2; // 특수문자 위치까지 벗어나야 함
                                 continue;
                             }
                         }
