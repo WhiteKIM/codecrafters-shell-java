@@ -16,13 +16,22 @@ public class DoubleQuoteParser implements QuoteParser{
 
         for(int i = 0; i < input.length(); i++) {
             char atChar = input.charAt(i);
-            char prevChar = ' ';
 
-            if(i - 1 >= 0) {
-                prevChar = input.charAt(i - 1);
+            if (atChar == '\\') {
+                // 특수문자 치환 추가
+                if (i + 1 < input.length()) {
+                    char nextChar = input.charAt(i + 1);
+
+                    // 특수 문자
+                    if (specialWord.contains(nextChar)) {
+                        sb.append(nextChar);
+                        i += 1; // 특수문자 위치까지 벗어나야 함
+                        continue;
+                    }
+                }
             }
 
-            if (atChar == '"' && (prevChar != '\\')) {
+            if (atChar == '"') {
                 isQuote = !isQuote;         // 현재 문자 쌍따옴표
             } else {                        // 현재 문자는 일반 문자열
                 if(isQuote && atChar != '\\') {
@@ -38,18 +47,6 @@ public class DoubleQuoteParser implements QuoteParser{
                         }
 
                         continue;
-                    } else if (atChar == '\\') {
-                        // 특수문자 치환 추가
-                        if(i + 1 < input.length()) {
-                            char nextChar = input.charAt(i + 1);
-
-                            // 특수 문자
-                            if(specialWord.contains(nextChar)) {
-                                sb.append(nextChar);
-                                i += 2; // 특수문자 위치까지 벗어나야 함
-                                continue;
-                            }
-                        }
                     }
 
                     sb.append(atChar);
