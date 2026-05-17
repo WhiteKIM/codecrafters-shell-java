@@ -25,7 +25,7 @@ public class DoubleQuoteParser implements QuoteParser{
             if (atChar == '"' && (prevChar != '\\')) {
                 isQuote = !isQuote;         // 현재 문자 쌍따옴표
             } else {                        // 현재 문자는 일반 문자열
-                if(isQuote) {
+                if(isQuote && atChar != '\\') {
                     // 따옴표 내에서는 모든 문자열을 받음
                     sb.append(atChar);
                 } else {
