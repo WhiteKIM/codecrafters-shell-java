@@ -22,7 +22,7 @@ public class DoubleQuoteParser implements QuoteParser{
                 prevChar = input.charAt(i - 1);
             }
 
-            if (atChar == '"' && (prevChar == '\\')) {
+            if (atChar == '"' && (prevChar != '\\')) {
                 isQuote = !isQuote;         // 현재 문자 쌍따옴표
             } else {                        // 현재 문자는 일반 문자열
                 if(isQuote) {
