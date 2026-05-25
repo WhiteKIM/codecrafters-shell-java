@@ -165,6 +165,21 @@ public class Interpreter {
         for(int i = 1; i < str.length(); i++) {
             char ch = str.charAt(i);
 
+            if(ch == '\\') {
+                if(i + 1 < str.length()) {
+                    char nextCh = str.charAt(i + 1);
+
+                    if(nextCh == '\\') {
+                        sb.append(nextCh);
+                        i++;
+                        continue;
+                    }
+                }
+
+                sb.append(ch);
+                continue;
+            }
+
             if(ch == startCh) {
                 break;
             }
