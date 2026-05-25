@@ -31,13 +31,15 @@ public class Interpreter {
         }
 
         // 명령어 인자 구분
-//        String command = commandLine[0].split(" ")[0];
-        String command = commandLine[0].trim().split("\\s+")[0].replaceAll("^['\"]|['\"]$", "");
+        String command = commandLine[0]
+                .trim()
+                .split("\\s+")[0]
+                .replaceAll("^['\"]|['\"]$", "");
 
         if(supportCommandSet.contains(command)) {
-           builtInCommand(commandLine, command);
+            builtInCommand(commandLine, command);
         } else {
-             checkShellCommand(commandLine, command);
+            checkShellCommand(commandLine);
         }
 
         bw.flush();
@@ -94,7 +96,6 @@ public class Interpreter {
                     bw.write(resultMsg + "\n");
                 break;
             case "cat":
-                System.out.println(commandLine[0]);
                 ProcessBuilder pcb = new ProcessBuilder("bash", "-c", commandLine[0]);
                 pcb.inheritIO();
                 Process process = pcb.start();
@@ -116,10 +117,13 @@ public class Interpreter {
         }
     }
 
-    private void checkShellCommand(String[] commandLine, String command) throws Exception {
+    private void checkShellCommand(String[] commandLine) throws Exception {
         String systemPath = System.getenv("PATH");
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         String[] systemPathList = systemPath.split(File.pathSeparator);
+
+        // command Parsing
+        String command = parsingCommand(commandLine);
 
         for(String path : systemPathList) {
             File shellCommand = new File(path, command);
@@ -137,6 +141,38 @@ public class Interpreter {
         String msg = command + ": command not found";
 
         bw.write(msg + "\n");
+    }
+
+    private String parsingCommand(String[] commandLine) {
+        Set<Character> specialWord = Set.of(
+                '\'', '\"'
+        );
+
+        String str = commandLine[0];
+        char startCh;
+
+        // 시작문자열
+        if(!specialWord.contains(str.charAt(0))) {
+            return commandLine[0]
+                    .trim()
+                    .split("\\s+")[0]
+                    .replaceAll("^['\"]|['\"]$", "");
+        }
+
+        startCh = str.charAt(0);
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 1; i < str.length(); i++) {
+            char ch = str.charAt(i);
+
+            if(ch == startCh) {
+                break;
+            }
+
+            sb.append(ch);
+        }
+
+        return sb.toString();
     }
 
 
