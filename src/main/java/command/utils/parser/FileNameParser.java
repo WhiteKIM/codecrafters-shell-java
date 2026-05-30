@@ -41,7 +41,7 @@ public class FileNameParser implements QuoteParser {
         }
 
         try (BufferedOutputStream br = new BufferedOutputStream(new FileOutputStream(file))) {
-            br.write(inputLine[0].getBytes());
+            br.write(inputLine[0].substring(0, inputLine[0].length() - 1).getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
