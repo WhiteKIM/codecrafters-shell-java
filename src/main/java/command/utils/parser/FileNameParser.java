@@ -26,11 +26,14 @@ public class FileNameParser implements QuoteParser {
         String fileName = inputLine[inputLine.length - 1];
 
         File file = new File(fileName);
+        File path = file.getParentFile();
 
+        if(path != null && !path.exists()) {
+            path.mkdirs();
+        }
+        
         if(!file.exists()) {
             try {
-                file.mkdirs();
-
                 if(file.createNewFile()) {
                     System.out.println("파일 생성 성공");
                 } else {
