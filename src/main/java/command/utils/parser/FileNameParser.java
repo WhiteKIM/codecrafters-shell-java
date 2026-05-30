@@ -1,5 +1,7 @@
 package command.utils.parser;
 
+import resolver.PathResolver;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,7 +27,7 @@ public class FileNameParser implements QuoteParser {
         // 끝에 있으면 파일명
         String fileName = inputLine[inputLine.length - 1];
 
-        File file = new File(fileName);
+        File file = new File(PathResolver.getWorkingDir() + "/" + fileName);
 
         if(!file.exists()) {
             try {
