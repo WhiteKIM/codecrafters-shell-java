@@ -29,6 +29,8 @@ public class FileNameParser implements QuoteParser {
 
         if(!file.exists()) {
             try {
+                file.mkdirs();
+
                 if(file.createNewFile()) {
                     System.out.println("파일 생성 성공");
                 } else {
