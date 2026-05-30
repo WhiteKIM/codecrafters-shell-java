@@ -46,7 +46,7 @@ public class FileNameParser implements QuoteParser {
             throw new RuntimeException(e);
         }
 
-        return "";
+        return null;
     }
 
     @Override

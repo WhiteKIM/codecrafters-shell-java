@@ -65,6 +65,10 @@ public class Interpreter {
 
                 EchoCommand echo= new EchoCommand();
                 resultMsg = echo.process(args);
+
+                if(resultMsg == null)
+                    break;
+
                 bw.write(resultMsg + "\n");
                 break;
             case "type":
