@@ -27,7 +27,7 @@ public class FileNameParser implements QuoteParser {
 
         File file = new File(fileName);
 
-        if(!file.isFile() && file.isDirectory()) {
+        if(!file.isFile() || file.isDirectory()) {
             return "nonexistent: No such file or directory";
         }
 
