@@ -23,7 +23,7 @@ public class FileNameParser implements QuoteParser {
         }
 
         // 끝에 있으면 파일명
-        String fileName = inputLine[inputLine.length - 1];
+        String fileName = inputLine[inputLine.length - 1].trim();
 
         File file = new File(fileName);
         File path = file.getParentFile();
