@@ -27,7 +27,7 @@ public class FileNameParser implements QuoteParser {
 
         File file = new File(fileName);
 
-        if(!file.isFile()) {
+        if(!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
