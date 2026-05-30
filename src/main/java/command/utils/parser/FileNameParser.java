@@ -31,15 +31,10 @@ public class FileNameParser implements QuoteParser {
         if(path != null && !path.exists()) {
             path.mkdirs();
         }
-        
+
         if(!file.exists()) {
             try {
-                if(file.createNewFile()) {
-                    System.out.println("파일 생성 성공");
-                } else {
-                    System.out.println("생성 실패 : " + fileName);
-                }
-
+                file.createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
